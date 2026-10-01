@@ -5,6 +5,7 @@ using UnityEngine.ProBuilder;
 using UnityEngine.ProBuilder.Shapes;
 using PBPlane = UnityEngine.ProBuilder.Shapes.Plane;
 using PBSprite = UnityEngine.ProBuilder.Shapes.Sprite;
+using ProBuilderArch = UnityEngine.ProBuilder.Shapes.Arch;
 
 namespace UnityEditor.ProBuilder
 {
@@ -83,7 +84,7 @@ namespace UnityEditor.ProBuilder
         [MenuItem("GameObject/ProBuilder/Arch", false, k_Priority)]
         static void CreateArch()
         {
-            CreateDefaultShape(typeof(Arch), new Vector3(4f, 2f, 1f));
+            CreateDefaultShape(typeof(ProBuilderArch), new Vector3(4f, 2f, 1f));
         }
 
         [MenuItem("GameObject/ProBuilder/Sphere", false, k_Priority)]
@@ -97,27 +98,27 @@ namespace UnityEditor.ProBuilder
         {
             CreateDefaultShape(typeof(Torus), new Vector3(2f, 0.6f, 2f));
         }
-        
+
         static ProBuilderShape CreateDefaultShape(Type shapeType, Vector3 size, string nameOverride = "", Action<Shape> shapeBuiltinParamPostProcess = null)
         {
             var shape = EditorShapeUtility.CreateShape(shapeType, copyLastParams: false);
             shape.SetParametersToBuiltInShape();
             shapeBuiltinParamPostProcess?.Invoke(shape);
-            
+
             var name = $"{shapeType.Name}";
             if (!string.IsNullOrEmpty(nameOverride))
                 name = nameOverride;
-            
+
             var shapeComp = new GameObject(name, typeof(ProBuilderShape)).GetComponent<ProBuilderShape>();
             Undo.RegisterCreatedObjectUndo(shapeComp.gameObject, $"Create {name}");
             shapeComp.SetShape(shape);
             shapeComp.size = size;
             shapeComp.shapeRotation = Quaternion.identity;
             shapeComp.mesh.renderer.sharedMaterial = EditorMaterialUtility.GetUserMaterial();
-            
+
             EditorUtility.InitObject(shapeComp.mesh);
             shapeComp.UpdateShape();
-            
+
             ProBuilderEditor.Refresh(false);
             SceneView.RepaintAll();
 

@@ -7,6 +7,7 @@ using UObject = UnityEngine.Object;
 using Plane = UnityEngine.ProBuilder.Shapes.Plane;
 using Sprite = UnityEngine.ProBuilder.Shapes.Sprite;
 using ToolManager = UnityEditor.EditorTools.ToolManager;
+using ProBuilderArch = UnityEngine.ProBuilder.Shapes.Arch;
 
 namespace UnityEditor.ProBuilder
 {
@@ -294,9 +295,9 @@ namespace UnityEditor.ProBuilder
 
         public override void OnActivated()
         {
-            if (m_LastShapeCreated && !(m_LastShapeCreated.shape is Arch))
+            if (m_LastShapeCreated && !(m_LastShapeCreated.shape is ProBuilderArch))
                 m_LastShapeCreated = null;
-            s_ActiveShapeIndex.value = Array.IndexOf(EditorShapeUtility.availableShapeTypes, typeof(Arch));
+            s_ActiveShapeIndex.value = Array.IndexOf(EditorShapeUtility.availableShapeTypes, typeof(ProBuilderArch));
             base.OnActivated();
         }
     }
